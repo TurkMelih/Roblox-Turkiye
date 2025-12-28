@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roblox | Türkiye Discord Sunucusu</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:Arial, sans-serif;
+  background:#2a0000;
+  color:#fff;
+  overflow:hidden;
+  transition:background 1s ease;
+  position:relative;
+  min-height:100vh;
+}
+header{
+  background:#7a0000;
+  padding:10px 0 20px;
+  position:fixed;
+  width:100%;
+  top:0;
+  z-index:1000;
+  box-shadow:0 2px 10px rgba(0,0,0,0.5);
+  text-align:center;
+  display:none;
+  opacity:0;
+  transition:opacity 1s ease;
+}
+header.show{opacity:1;}
+header .logo-container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+}
+.roblox-logo{
+  width:25px;
+  height:25px;
+  background:#fff;
+  transform:rotate(45deg);
+  position:relative;
+}
+.roblox-logo::after{
+  content:"";
+  position:absolute;
+  top:6px;
+  left:6px;
+  width:13px;
+  height:13px;
+  background:#7a0000;
+}
+.discord-logo{
+  width:28px;
+  height:20px;
+  background:#5865F2;
+  border-radius:10px;
+  position:relative;
+}
+.discord-logo::before,
+.discord-logo::after{
+  content:"";
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:#fff;
+  border-radius:50%;
+  top:6px;
+}
+.discord-logo::before{left:6px;}
+.discord-logo::after{right:6px;}
+header h1{font-size:24px;color:#fff;margin-bottom:5px;}
+header a.join-btn{
+  display:inline-block;
+  background:#fff;
+  color:#7a0000;
+  padding:6px 14px;
+  border-radius:5px;
+  text-decoration:none;
+  font-weight:bold;
+  transition:0.3s;
+  box-shadow:0 0 10px #fff;
+}
+header a.join-btn:hover{
+  background:#ff4747;
+  color:#fff;
+  box-shadow:0 0 20px #ff4747;
+}
+nav{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:40px;
+  margin-top:10px;
+}
+nav a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:bold;
+  transition:0.3s;
+  position:relative;
+  cursor:pointer;
+}
+nav a::after{
+  content:"";
+  position:absolute;
+  width:0;
+  height:2px;
+  bottom:-5px;
+  left:0;
+  background:#fff;
+  transition:0.3s;
+}
+nav a:hover::after{width:100%;}
+section{
+  padding:160px 20px 100px;
+  max-width:1000px;
+  margin:auto;
+  text-align:center;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.6s ease, transform 0.6s ease;
+  display:none;
+  min-height:calc(100vh - 200px);
+}
+section.active{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+h2{color:#ff4747;text-shadow:0 0 10px #000;}
+ul{list-style:none;padding:0;}
+li{margin:8px 0;}
+footer{
+  background:#7a0000;
+  text-align:center;
+  padding:20px;
+  color:#fff;
+  position:fixed;
+  bottom:0;
+  width:100%;
+  left:0;
+  display:none;
+  opacity:0;
+  transition:opacity 1s ease;
+}
+footer.show{opacity:1;}
+#countdown-bar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:40px;
+  background:#5a0000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  color:#fff;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.5);
+  z-index:1000;
+}
+.snowflake{
+  position:fixed;
+  top:-10px;
+  color:white;
+  font-size:1em;
+  user-select:none;
+  pointer-events:none;
+  animation:fall linear infinite;
+  z-index:9999;
+}
+@keyframes fall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(100vh) rotate(360deg);opacity:0;}
+}
+#welcome-screen{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#2a0000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:2000;
+  overflow:hidden;
+}
+#welcome-screen h1{
+  font-size:40px;
+  color:#fff;
+  text-shadow:0 0 25px #ff4747;
+  text-align:center;
+  animation:fadeIn 1.5s ease;
+}
+#welcome-screen::before,
+#welcome-screen::after{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#7a0000;
+  z-index:2100;
+  transform-origin:center;
+}
+#welcome-screen::before{
+  top:0;
+  left:0;
+  transform:translate(-100%, -100%);
+  animation:slideTopLeft 1.5s ease forwards;
+  animation-delay:2s;
+}
+#welcome-screen::after{
+  bottom:0;
+  right:0;
+  transform:translate(100%, 100%);
+  animation:slideBottomRight 1.5s ease forwards;
+  animation-delay:2s;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideTopLeft{to{transform:translate(0,0);}}
+@keyframes slideBottomRight{to{transform:translate(0,0);}}
+.tree{
+  position:fixed;
+  bottom:10px;
+  left:20px;
+  font-size:60px;
+  text-shadow:0 0 15px #00ff00;
+  z-index:999;
+}
+.tree2{
+  position:fixed;
+  bottom:10px;
+  right:20px;
+  font-size:60px;
+  text-shadow:0 0 15px #00ff00;
+  z-index:999;
+}
+.game-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-top:20px;
+}
+.game-card{
+  background:#5a0000;
+  border-radius:10px;
+  padding:15px;
+  box-shadow:0 0 10px rgba(0,0,0,0.5);
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+}
+.game-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 20px #ff4747;
+}
+.icon{
+  font-size:30px;
+  margin-bottom:10px;
+}
+</style>
+</head>
+<body>
+
+<div id="welcome-screen">
+  <h1>Roblox | Türkiye'ye Hoşgeldin!</h1>
+</div>
+
+<header>
+  <div class="logo-container">
+    <div class="roblox-logo"></div>
+    <h1>Roblox | Türkiye</h1>
+    <div class="discord-logo"></div>
+  </div>
+  <a href="https://discord.com/invite/c4GJNRZYKc" class="join-btn" target="_blank">Katıl</a>
+  <nav>
+    <a onclick="showSection('anasayfa')">Ana Sayfa</a>
+    <a onclick="showSection('kurallar')">Kurallar</a>
+    <a onclick="showSection('ekibimiz')">Ekibimiz</a>
+    <a onclick="showSection('ozellikler')">Özelliklerimiz</a>
+  </nav>
+</header>
+
+<section id="anasayfa" class="active">
+<h2>🎄 Roblox | Türkiye Discord Sunucusu 🎅</h2>
+<p>Roblox Türkiye, oyuncuların bir araya gelip eğlendiği, yeni arkadaşlıklar kurduğu ve birlikte oyunlar oynadığı sıcak bir topluluktur.</p>
+<p>Sunucumuzda her gün aktif sohbetler, mini etkinlikler, çekilişler ve Roblox dünyasından en güncel haberler seni bekliyor!</p>
+
+<h2>🔥 Sunucuda En Çok Oynanan Roblox Oyunları</h2>
+<div class="game-grid">
+  <div class="game-card"><div class="icon">⚔️</div><h3>Blox Fruits</h3><p>Macera, deniz ve meyve güçleriyle dolu bir dünya! Sunucuda en çok oynanan oyunlardan biri.</p></div>
+  <div class="game-card"><div class="icon">🏡</div><h3>Brookhaven RP</h3><p>Rol yapma, ev kurma ve arkadaşlarınla eğlenme zamanı!</p></div>
+  <div class="game-card"><div class="icon">🔫</div><h3>Arsenal</h3><p>Hızlı tempolu FPS deneyimi! Turnuvalarımızda sıkça oynanır.</p></div>
+  <div class="game-card"><div class="icon">🐶</div><h3>Adopt Me!</h3><p>Evcil hayvan topla, ticaret yap ve arkadaşlarınla eğlen!</p></div>
+  <div class="game-card"><div class="icon">🚗</div><h3>Jailbreak</h3><p>Kaçış planları yap, soygunlara katıl ve polislerden kurtul!</p></div>
+  <div class="game-card"><div class="icon">🏙️</div><h3>Tower of Hell</h3><p>Yeteneklerini test et! Zorlu parkurları geç ve zirveye ulaş!</p></div>
+  <div class="game-card"><div class="icon">🧱</div><h3>Build A Boat</h3><p>Kendi gemini inşa et, denizlerde maceraya atıl!</p></div>
+  <div class="game-card"><div class="icon">🎢</div><h3>Theme Park Tycoon 2</h3><p>Kendi lunaparkını kur, ziyaretçileri eğlendir!</p></div>
+</div>
+
+<h2>📰 Roblox Güncellemeleri</h2>
+<p>Roblox Studio artık daha güçlü! Yeni materyal sistemi, ışık efektleri ve animasyon araçlarıyla oyun yapımı çok daha kolay.  
+Ayrıca 2025 itibariyle Roblox, mobil cihazlarda 120 FPS desteğini test ediyor!</p>
+
+<p>Yeni “Roblox Connect” özelliğiyle artık oyun içi sesli sohbetler daha güvenli ve kaliteli hale geldi.  
+Sunucumuzda bu özellikleri test eden özel bir geliştirici ekibi bulunuyor!</p>
+
+<h2>💡 Roblox İpuçları</h2>
+<ul>
+<li>🎨 Roblox Studio’da “Terrain Editor” ile gerçekçi dağlar ve göller oluşturabilirsin.</li>
+<li>💰 Oyununa “Gamepass” ekleyerek Robux kazanabilirsin.</li>
+<li>⚙️ “Lighting” sekmesinde “Future” modunu açarak daha sinematik bir görünüm elde edebilirsin.</li>
+<li>🧩 Lua kodlama öğrenerek kendi özel sistemlerini geliştirebilirsin.</li>
+<li>🎮 Roblox Creator Hub’da binlerce ücretsiz model ve ses efekti bulabilirsin.</li>
+</ul>
+
+<h2>🎁 Etkinlikler ve Duyurular</h2>
+<p>🎉 Haftalık çekilişler, 🎮 oyun turnuvaları, 🎤 sesli sohbet etkinlikleri ve 🎆 özel yılbaşı kutlamaları seni bekliyor!  
+Ayrıca Roblox Türkiye 2025 Ödülleri yakında başlıyor — en iyi oyun, en iyi tasarım ve en aktif oyuncu kategorilerinde yarışma zamanı!</p>
+</section>
+
+<section id="kurallar">
+<h2>📜 Sunucu Kuralları</h2>
+<ul>
+<li>🚫 Küfür, hakaret, ayrımcılık veya nefret söylemi yasaktır.</li>
+<li>🤝 Herkese saygılı ol, tartışmalar dostça kalsın.</li>
+<li>📢 Spam, flood ve gereksiz etiketleme yapma.</li>
+<li>🔒 Kişisel bilgileri paylaşma, gizliliğe dikkat et.</li>
+<li>🎭 Rol ve kanal düzenine uy, karışıklık yaratma.</li>
+<li>🎨 Paylaşımlar özgün ve uygun içerikte olsun.</li>
+<li>🛠️ Bot komutlarını doğru kanalda kullan.</li>
+<li>📚 Kuralları bilerek ihlal eden uyarı alır, tekrarında ban gelir.</li>
+<li>🎉 Eğlen, katkı sağla ve topluluğu canlı tut!</li>
+</ul>
+</section>
+
+<section id="ekibimiz">
+<h2>👥 Ekibimiz</h2>
+<ul>
+<li><strong>Kurucu:</strong> Roblox | Türkiye Yönetimi</li>
+<li><strong>Yöneticiler:</strong> Deneyimli moderatör ekibi</li>
+<li><strong>Destek Ekibi:</strong> Üyelere hızlı yardım sağlayan gönüllüler</li>
+<li><strong>Etkinlik Ekibi:</strong> Yarışmalar, çekilişler ve özel etkinlikleri organize eder.</li>
+<li><strong>Topluluk Temsilcileri:</strong> Yeni üyeleri karşılar, rehberlik eder.</li>
+</ul>
+<p>Ekibimiz ayrıca Roblox geliştiricileriyle iş birliği yaparak Türk topluluğuna özel rehberler, eğitimler ve etkinlikler düzenler.  
+2025’te “Roblox Türkiye Geliştirici Programı” başlatılıyor — oyun yapmayı öğrenmek isteyen herkes katılabilir!</p>
+</section>
+
+<section id="ozellikler">
+<h2>⚙️ Özelliklerimiz</h2>
+<ul>
+<li>💬 Aktif sohbet kanalları</li>
+<li>🎮 Roblox oyun etkinlikleri</li>
+<li>🎁 Ödüllü yarışmalar ve çekilişler</li>
+<li>🤖 Gelişmiş bot sistemleri</li>
+<li>📢 Duyuru ve haber kanalları</li>
+<li>🎨 Paylaşım ve tasarım alanları</li>
+<li>🎧 Müzik botu ile keyifli vakit</li>
+<li>🕹️ Oyun odaları ve özel roller</li>
+<li>🛠️ 7/24 aktif destek ekibi</li>
+<li>🎆 Yılbaşı özel teması ve kar efekti!</li>
+<li>🧠 Roblox Studio eğitimleri ve rehberleri</li>
+<li>🌍 Türk geliştiriciler için özel destek kanalları</li>
+<li>🎯 Haftalık görev sistemi ve ödüller</li>
+<li>💎 Premium üyeler için özel roller ve avantajlar</li>
+</ul>
+</section>
+
+<footer>
+<p>© 2025 Roblox | Türkiye Discord Sunucusu 🎄</p>
+</footer>
+
+<div id="countdown-bar">🎆 Yılbaşına kalan süre hesaplanıyor...</div>
+
+<div class="tree">🎄</div>
+<div class="tree2">🎄</div>
+
+<iframe id="music" width="0" height="0" src="https://www.youtube.com/embed/LGrn-3UpPEY?autoplay=1&loop=1&playlist=LGrn-3UpPEY" frameborder="0" allow="autoplay"></iframe>
+
+<script>
+function showSection(id){
+  const current=document.querySelector("section.active");
+  const next=document.getElementById(id);
+  if(current===next)return;
+  current.style.opacity="0";
+  current.style.transform="translateY(20px)";
+  setTimeout(()=>{
+    current.classList.remove("active");
+    next.classList.add("active");
+    next.style.opacity="0";
+    next.style.transform="translateY(20px)";
+    setTimeout(()=>{
+      next.style.opacity="1";
+      next.style.transform="translateY(0)";
+    },100);
+  },400);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* Kar efekti (açılıştan sonra başlar) */
+function createSnow(){
+  for(let i=0;i<80;i++){
+    const snow=document.createElement("div");
+    snow.classList.add("snowflake");
+    snow.textContent="❄";
+    snow.style.left=Math.random()*100+"vw";
+    snow.style.top="-10px";
+    snow.style.animationDuration=5+Math.random()*5+"s";
+    snow.style.fontSize=10+Math.random()*20+"px";
+    snow.style.opacity=Math.random();
+    document.body.appendChild(snow);
+  }
+}
+
+/* Yılbaşı geri sayım */
+function updateCountdown(){
+  const now=new Date();
+  const nextYear=now.getFullYear()+1;
+  const newYear=new Date(`January 1, ${nextYear} 00:00:00`);
+  const diff=newYear-now;
+  const days=Math.floor(diff/(1000*60*60*24));
+  const hours=Math.floor((diff/(1000*60*60))%24);
+  const minutes=Math.floor((diff/(1000*60))%60);
+  const seconds=Math.floor((diff/1000)%60);
+  document.getElementById("countdown-bar").textContent=
+  `🎆 Yılbaşına ${days} gün ${hours} saat ${minutes} dakika ${seconds} saniye kaldı! 🎇`;
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+/* Açılış ekranı */
+window.addEventListener("load",()=>{
+  const header=document.querySelector("header");
+  const footer=document.querySelector("footer");
+  setTimeout(()=>{
+    document.getElementById("welcome-screen").style.display="none";
+    header.style.display="block";
+    footer.style.display="block";
+    document.body.style.overflow="auto";
+    header.classList.add("show");
+    footer.classList.add("show");
+    createSnow(); // kar sadece açılıştan sonra başlar
+  },3000);
+});
+</script>
+
+</body>
+</html>
+
